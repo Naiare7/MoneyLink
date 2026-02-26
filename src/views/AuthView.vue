@@ -104,12 +104,8 @@ const handleLogin = async () => {
     successMessage.value = 'Login successful!'
     
     setTimeout(() => {
-      if (transferData.value) {
-        transferStorage.clearTransferData()
-        router.push('/transfer')
-      } else {
-        router.push('/converter')
-      }
+      // Redirigir a la vista de destinatario para continuar con el envío
+      router.push('/recipient')
     }, 500)
   } catch (e) {
     error.value = e.message || 'Invalid email or password'
@@ -136,12 +132,8 @@ const handleRegister = async () => {
     successMessage.value = 'Registration successful!'
     
     setTimeout(() => {
-      if (transferData.value) {
-        transferStorage.clearTransferData()
-        router.push('/transfer')
-      } else {
-        router.push('/converter')
-      }
+      // Redirigir a la vista de destinatario para continuar con el envío
+      router.push('/recipient')
     }, 500)
   } catch (e) {
     error.value = e.message || 'Registration failed'
