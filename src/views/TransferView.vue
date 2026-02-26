@@ -1,9 +1,11 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { authService, transferStorage } from '../services/authService'
+import { transactionService } from '../services/transactionService'
 
 const router = useRouter()
+const savedToHistory = ref(false)
 
 onMounted(() => {
   if (!authService.isAuthenticated()) {
@@ -18,7 +20,9 @@ onMounted(() => {
   
   const transferData = transferStorage.getTransferData()
   
-  if (transferData && transferData.step === 'complete') {
+  if (transferData && transferData.step === 'complete' && !savedToHistory.value) {
+    transactionService.saveTransaction(transferData)
+    savedToHistory.value = true
     return
   }
   
@@ -31,10 +35,18 @@ onMounted(() => {
   } else if (!transferData.paymentMethod) {
     router.push('/payment')
   } else {
+    transactionService.saveTransaction(transferData)
+    savedToHistory.value = true
+    
     const updatedData = { ...transferData, step: 'complete' }
     transferStorage.saveTransferData(updatedData)
   }
 })
+
+const goToDashboard = () => {
+  transferStorage.clearTransferData()
+  router.push('/dashboard')
+}
 
 const startNewTransfer = () => {
   transferStorage.clearTransferData()
@@ -56,6 +68,9 @@ const startNewTransfer = () => {
       </div>
 
       <div class="transfer-actions">
+        <button @click="goToDashboard" class="dashboard-button">
+          Ver en Dashboard
+        </button>
         <button @click="startNewTransfer" class="new-transfer-button">
           Nueva Transferencia
         </button>
@@ -119,7 +134,26 @@ const startNewTransfer = () => {
 
 .transfer-actions {
   display: flex;
+  gap: 12px;
   justify-content: center;
+  flex-wrap: wrap;
+}
+
+.dashboard-button {
+  background: transparent;
+  border: 1px solid #1a2e29;
+  color: #A0A0A0;
+  border-radius: 8px;
+  padding: 14px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dashboard-button:hover {
+  border-color: #00E676;
+  color: #00E676;
 }
 
 .new-transfer-button {

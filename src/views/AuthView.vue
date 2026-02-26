@@ -6,6 +6,8 @@ import { authService, transferStorage } from '../services/authService'
 const router = useRouter()
 const route = useRoute()
 
+const emit = defineEmits(['auth-change'])
+
 const isLogin = ref(true)
 const isLoading = ref(false)
 const error = ref(null)
@@ -104,11 +106,12 @@ const handleLogin = async () => {
     successMessage.value = 'Login successful!'
     
     setTimeout(() => {
+      emit('auth-change')
       if (transferData.value) {
         transferStorage.clearTransferData()
         router.push('/transfer')
       } else {
-        router.push('/converter')
+        router.push('/dashboard')
       }
     }, 500)
   } catch (e) {
@@ -136,11 +139,12 @@ const handleRegister = async () => {
     successMessage.value = 'Registration successful!'
     
     setTimeout(() => {
+      emit('auth-change')
       if (transferData.value) {
         transferStorage.clearTransferData()
         router.push('/transfer')
       } else {
-        router.push('/converter')
+        router.push('/dashboard')
       }
     }, 500)
   } catch (e) {

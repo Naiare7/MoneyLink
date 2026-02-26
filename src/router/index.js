@@ -5,6 +5,7 @@ import TransferView from '../views/TransferView.vue'
 import RecipientView from '../views/RecipientView.vue'
 import SenderView from '../views/SenderView.vue'
 import PaymentView from '../views/PaymentView.vue'
+import DashboardView from '../views/DashboardView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -47,6 +48,11 @@ const router = createRouter({
       path: '/payment',
       name: 'payment',
       component: PaymentView
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: DashboardView
     }
   ],
 })
