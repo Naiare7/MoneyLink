@@ -116,8 +116,8 @@ const getCountryName = (code) => countryNames[code] || code
   display: flex;
   justify-content: space-between;
   align-items: center;
-16px;
-   padding:  background: #020b08;
+  padding: 16px;
+  background: #020b08;
   border: 1px solid #1a2e29;
   border-radius: 12px;
   cursor: pointer;
