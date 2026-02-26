@@ -40,6 +40,17 @@
       "userId": "d9cd",
       "updatedAt": "2026-02-26T10:43:03.874Z",
       "createdAt": "2026-02-26T10:43:03.875Z"
+    },
+    {
+      "id": "466f",
+      "fullName": "Mirel",
+      "country": "CL",
+      "accountNumber": "ljgiuhafiudafajsdfads",
+      "phone": "+34 659856321",
+      "email": "",
+      "userId": "d9cd",
+      "updatedAt": "2026-02-26T13:01:51.076Z",
+      "createdAt": "2026-02-26T13:01:51.076Z"
     }
   ]
 }
