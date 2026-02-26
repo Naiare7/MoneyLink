@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, onActivated } from 'vue'
 import { useRouter } from 'vue-router'
 import { authService, transferStorage } from '../services/authService'
 import { recipientService } from '../services/recipientService'
@@ -14,8 +14,9 @@ const currentUser = ref(null)
 const currentTransaction = ref(null)
 const recentTransactions = ref([])
 const frequentRecipients = ref([])
+const isLoadingRecipients = ref(true)
 
-onMounted(() => {
+const loadData = async () => {
   if (!authService.isAuthenticated()) {
     router.push('/login')
     return
@@ -28,8 +29,22 @@ onMounted(() => {
     currentTransaction.value = transferData
   }
   
-  frequentRecipients.value = recipientService.getRecipients()
+  try {
+    frequentRecipients.value = await recipientService.getRecipients()
+  } catch (error) {
+    console.error('Error loading recipients:', error)
+    frequentRecipients.value = []
+  } finally {
+    isLoadingRecipients.value = false
+  }
+  
   recentTransactions.value = transactionService.getRecentTransactions(5)
+}
+
+onMounted(loadData)
+
+onActivated(() => {
+  loadData()
 })
 
 const greeting = computed(() => {
@@ -75,6 +90,19 @@ const handleRecipientSelect = (recipient) => {
 
 const handleRecipientEdit = (recipient) => {
   router.push(`/edit-recipient/${recipient.id}`)
+}
+
+const handleRecipientDelete = async (recipient) => {
+  const confirmed = confirm(`¿Estás seguro de eliminar a ${recipient.fullName} de tus destinatarios frecuentes?`)
+  
+  if (confirmed) {
+    try {
+      await recipientService.deleteRecipient(recipient.id)
+      frequentRecipients.value = await recipientService.getRecipients()
+    } catch (error) {
+      console.error('Error al eliminar destinatario:', error)
+    }
+  }
 }
 
 const handleTransactionSelect = (transaction) => {
@@ -127,10 +155,15 @@ const handleLogout = () => {
           <span class="title-icon">⭐</span>
           Destinatarios Frecuentes
         </h2>
+        <div v-if="isLoadingRecipients" class="loading-indicator">
+          <span>Cargando...</span>
+        </div>
         <RecipientQuickList 
+          v-else
           :recipients="frequentRecipients"
           @select="handleRecipientSelect"
           @edit="handleRecipientEdit"
+          @delete="handleRecipientDelete"
         />
       </section>
       
@@ -308,5 +341,11 @@ const handleLogout = () => {
   .dashboard-section {
     padding: 20px 16px;
   }
+}
+
+.loading-indicator {
+  text-align: center;
+  padding: 24px;
+  color: #5a6a65;
 }
 </style>

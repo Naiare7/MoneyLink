@@ -8,7 +8,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['select', 'edit'])
+const emit = defineEmits(['select', 'edit', 'delete'])
 
 const countryNames = {
   'CO': 'Colombia',
@@ -29,6 +29,11 @@ const handleSelect = (recipient) => {
 const handleEdit = (recipient, event) => {
   event.stopPropagation()
   emit('edit', recipient)
+}
+
+const handleDelete = (recipient, event) => {
+  event.stopPropagation()
+  emit('delete', recipient)
 }
 </script>
 
@@ -52,9 +57,14 @@ const handleEdit = (recipient, event) => {
           <span class="name">{{ recipient.fullName }}</span>
           <span class="country">{{ getCountryName(recipient.country) }}</span>
         </div>
-        <button class="edit-btn" @click="handleEdit(recipient, $event)" title="Editar">
-          ✏️
-        </button>
+        <div class="action-buttons">
+          <button class="edit-btn" @click="handleEdit(recipient, $event)" title="Editar">
+            ✏️
+          </button>
+          <button class="delete-btn" @click="handleDelete(recipient, $event)" title="Eliminar">
+            🗑️
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -148,6 +158,20 @@ const handleEdit = (recipient, event) => {
 .edit-btn {
   position: absolute;
   top: 8px;
+  right: 40px;
+  background: rgba(10, 31, 26, 0.8);
+  border: 1px solid #1a2e29;
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 8px;
   right: 8px;
   background: rgba(10, 31, 26, 0.8);
   border: 1px solid #1a2e29;
@@ -159,13 +183,19 @@ const handleEdit = (recipient, event) => {
   transition: all 0.2s ease;
 }
 
-.recipient-chip:hover .edit-btn {
+.recipient-chip:hover .edit-btn,
+.recipient-chip:hover .delete-btn {
   opacity: 1;
 }
 
 .edit-btn:hover {
   background: rgba(0, 230, 118, 0.2);
   border-color: #00E676;
+}
+
+.delete-btn:hover {
+  background: rgba(255, 71, 87, 0.2);
+  border-color: #ff6b7a;
 }
 
 @media (max-width: 480px) {
