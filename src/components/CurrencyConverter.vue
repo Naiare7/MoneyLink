@@ -157,10 +157,10 @@ const timeAgo = computed(() => {
 
 <style scoped>
 .converter-card {
-  background: rgba(10, 31, 26, 0.4);
+  background: var(--bg-secondary);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(26, 46, 41, 0.8);
+  border: 1px solid var(--border-color);
   border-radius: 24px;
   padding: 32px;
   width: 100%;
@@ -175,7 +175,7 @@ const timeAgo = computed(() => {
 }
 
 .converter-header h2 {
-  color: #00E676;
+  color: var(--accent-color);
   font-size: 0.75rem;
   font-weight: 700;
   margin: 0;
@@ -190,20 +190,20 @@ const timeAgo = computed(() => {
   content: '';
   width: 8px;
   height: 8px;
-  background: #00E676;
+  background: var(--accent-color);
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(0, 230, 118, 0.5);
+  box-shadow: 0 0 10px var(--accent-color);
 }
 
 .updated-indicator {
-  color: #A0A0A0;
+  color: var(--text-secondary);
   font-size: 0.75rem;
   cursor: pointer;
   transition: color 0.2s ease;
 }
 
 .updated-indicator:hover {
-  color: #00E676;
+  color: var(--accent-color);
 }
 
 .currency-row {
@@ -219,14 +219,14 @@ const timeAgo = computed(() => {
 }
 
 .currency-input-group label {
-  color: #A0A0A0;
+  color: var(--text-secondary);
   font-size: 0.875rem;
   font-weight: 500;
 }
 
 .input-wrapper {
-  background: rgba(2, 11, 8, 0.5);
-  border: 1px solid rgba(26, 46, 41, 1);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
   border-radius: 16px;
   padding: 16px 20px;
   display: flex;
@@ -236,13 +236,13 @@ const timeAgo = computed(() => {
 }
 
 .input-wrapper:focus-within {
-  border-color: #00E676;
+  border-color: var(--accent-color);
 }
 
 .amount-input {
   background: transparent;
   border: none;
-  color: #FFFFFF;
+  color: var(--text-primary);
   font-size: 1.75rem;
   font-weight: 600;
   width: 100%;
@@ -251,18 +251,18 @@ const timeAgo = computed(() => {
 
 .result-wrapper {
   background: rgba(0, 230, 118, 0.05);
-  border-color: rgba(0, 230, 118, 0.2);
+  border-color: var(--accent-color);
   gap: 8px;
 }
 
 .currency-symbol {
-  color: #00E676;
+  color: var(--accent-color);
   font-size: 1.5rem;
   font-weight: 700;
 }
 
 .result-amount {
-  color: #00E676;
+  color: var(--accent-color);
   font-size: 2rem;
   font-weight: 700;
 }
@@ -273,11 +273,11 @@ const timeAgo = computed(() => {
 
 .currency-select {
   width: 100%;
-  background: #1a2e29;
-  border: 1px solid rgba(26, 46, 41, 0.8);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 12px 16px;
-  color: #FFFFFF;
+  color: var(--text-primary);
   font-size: 0.9375rem;
   font-weight: 600;
   cursor: pointer;
@@ -290,8 +290,8 @@ const timeAgo = computed(() => {
 }
 
 .currency-select:hover {
-  border-color: #00E676;
-  background-color: #1f3a34;
+  border-color: var(--accent-color);
+  background-color: var(--bg-secondary);
 }
 
 .swap-button-container {
@@ -303,7 +303,7 @@ const timeAgo = computed(() => {
 }
 
 .swap-button {
-  background: #00E676;
+  background: var(--accent-color);
   border: none;
   border-radius: 50%;
   width: 44px;
@@ -312,9 +312,9 @@ const timeAgo = computed(() => {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #020b08;
+  color: #000000;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .swap-button:hover {
@@ -328,16 +328,16 @@ const timeAgo = computed(() => {
   align-items: center;
   margin-top: 32px;
   padding-top: 24px;
-  border-top: 1px solid rgba(26, 46, 41, 0.6);
+  border-top: 1px solid var(--border-color);
 }
 
 .rate-label {
-  color: #A0A0A0;
+  color: var(--text-secondary);
   font-size: 0.8125rem;
 }
 
 .rate-value {
-  color: #FFFFFF;
+  color: var(--text-primary);
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
@@ -345,8 +345,8 @@ const timeAgo = computed(() => {
 
 .execute-button {
   width: 100%;
-  background: #00E676;
-  color: #020b08;
+  background: var(--accent-color);
+  color: #000000;
   border: none;
   border-radius: 12px;
   padding: 18px;
@@ -358,7 +358,7 @@ const timeAgo = computed(() => {
 }
 
 .execute-button:hover {
-  background: #00C853;
+  background: var(--accent-hover);
   transform: translateY(-2px);
 }
 

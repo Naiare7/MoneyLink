@@ -116,10 +116,11 @@ import CurrencyConverter from '../components/CurrencyConverter.vue'
   font-weight: 700;
   margin-bottom: 16px;
   letter-spacing: -0.02em;
+  color: var(--text-primary);
 }
 
 .main-description {
-  color: #A0A0A0;
+  color: var(--text-secondary);
   font-size: 1.125rem;
   line-height: 1.6;
 }
@@ -144,8 +145,8 @@ import CurrencyConverter from '../components/CurrencyConverter.vue'
 }
 
 .analyst-note {
-  background: rgba(10, 31, 26, 0.4);
-  border: 1px solid rgba(0, 230, 118, 0.3);
+  background: var(--bg-secondary);
+  border: 1px solid var(--accent-color);
   border-radius: 16px;
   padding: 24px;
   display: flex;
@@ -158,7 +159,7 @@ import CurrencyConverter from '../components/CurrencyConverter.vue'
 }
 
 .note-content p {
-  color: #A0A0A0;
+  color: var(--text-secondary);
   font-size: 0.875rem;
   line-height: 1.5;
   margin: 0;
@@ -171,8 +172,8 @@ import CurrencyConverter from '../components/CurrencyConverter.vue'
 }
 
 .trust-box {
-  background: rgba(10, 31, 26, 0.4);
-  border: 1px solid rgba(26, 46, 41, 0.6);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   padding: 20px;
   text-align: center;
@@ -186,15 +187,15 @@ import CurrencyConverter from '../components/CurrencyConverter.vue'
 }
 
 .trust-label {
-  color: #A0A0A0;
+  color: var(--text-secondary);
   font-size: 0.625rem;
   font-weight: 700;
   letter-spacing: 0.05em;
 }
 
 .market-info-card {
-  background: rgba(10, 31, 26, 0.4);
-  border: 1px solid rgba(26, 46, 41, 0.6);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   padding: 24px;
 }
@@ -209,9 +210,9 @@ import CurrencyConverter from '../components/CurrencyConverter.vue'
 .status-dot {
   width: 8px;
   height: 8px;
-  background: #00E676;
+  background: var(--accent-color);
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(0, 230, 118, 0.4);
+  box-shadow: 0 0 10px var(--accent-color);
 }
 
 .info-header h4 {
@@ -220,7 +221,7 @@ import CurrencyConverter from '../components/CurrencyConverter.vue'
 }
 
 .market-info-card p {
-  color: #A0A0A0;
+  color: var(--text-secondary);
   font-size: 0.875rem;
   line-height: 1.5;
   margin: 0;
@@ -230,7 +231,7 @@ import CurrencyConverter from '../components/CurrencyConverter.vue'
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 40px;
-  border-top: 1px solid rgba(26, 46, 41, 0.6);
+  border-top: 1px solid var(--border-color);
   padding: 80px 0;
   margin-top: 40px;
 }
@@ -241,7 +242,7 @@ import CurrencyConverter from '../components/CurrencyConverter.vue'
 }
 
 .feature-item p {
-  color: #A0A0A0;
+  color: var(--text-secondary);
   font-size: 1rem;
   line-height: 1.5;
 }
@@ -251,7 +252,7 @@ import CurrencyConverter from '../components/CurrencyConverter.vue'
   justify-content: space-between;
   align-items: center;
   padding: 32px 0;
-  border-top: 1px solid rgba(26, 46, 41, 0.4);
+  border-top: 1px solid var(--border-color);
 }
 
 .footer-logo {
@@ -268,7 +269,7 @@ import CurrencyConverter from '../components/CurrencyConverter.vue'
 }
 
 .copyright {
-  color: #505050;
+  color: var(--text-secondary);
   font-size: 0.8125rem;
 }
 
@@ -278,12 +279,12 @@ import CurrencyConverter from '../components/CurrencyConverter.vue'
 }
 
 .footer-icon-link {
-  color: #505050;
+  color: var(--text-secondary);
   transition: color 0.2s ease;
 }
 
 .footer-icon-link:hover {
-  color: #00E676;
+  color: var(--accent-color);
 }
 
 @media (max-width: 1024px) {
