@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { recipientService } from '../services/recipientService'
+import { CURRENCIES } from '../constants/currencies'
 
 const props = defineProps({
   initialData: {
@@ -31,15 +32,13 @@ onMounted(async () => {
   }
 })
 
-const countries = [
-  { code: 'CO', name: 'Colombia', flag: '🇨🇴', currency: 'COP' },
-  { code: 'MX', name: 'México', flag: '🇲🇽', currency: 'MXN' },
-  { code: 'PE', name: 'Perú', flag: '🇵🇪', currency: 'PEN' },
-  { code: 'CL', name: 'Chile', flag: '🇨🇱', currency: 'CLP' },
-  { code: 'AR', name: 'Argentina', flag: '🇦🇷', currency: 'ARS' },
-  { code: 'ES', name: 'España', flag: '🇪🇸', currency: 'EUR' },
-  { code: 'US', name: 'Estados Unidos', flag: '🇺🇸', currency: 'USD' }
-]
+// Derive countries from CURRENCIES constant
+const countries = CURRENCIES.map(c => ({
+  code: c.code, // Using currency code as the identifier
+  name: c.region,
+  flag: c.flag,
+  currency: c.code
+})).sort((a, b) => a.name.localeCompare(b.name))
 
 const validate = () => {
   errors.value = {}

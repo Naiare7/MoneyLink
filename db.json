@@ -8,5 +8,17 @@
       "idNumber": "12345678"
     }
   ],
-  "recipients": []
+  "recipients": [
+    {
+      "id": "6604",
+      "fullName": "Juan Perez",
+      "country": "JPY",
+      "accountNumber": "292596961259",
+      "phone": "651251626306",
+      "email": "",
+      "userId": "1",
+      "updatedAt": "2026-02-27T09:27:41.455Z",
+      "createdAt": "2026-02-27T09:27:41.455Z"
+    }
+  ]
 }
