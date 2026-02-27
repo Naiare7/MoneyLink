@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { CURRENCIES } from '../constants/currencies'
 
 const props = defineProps({
   transaction: {
@@ -27,17 +27,10 @@ const formatDate = (dateString) => {
   }).format(date)
 }
 
-const countryNames = {
-  'CO': 'Colombia',
-  'MX': 'México',
-  'PE': 'Perú',
-  'CL': 'Chile',
-  'AR': 'Argentina',
-  'ES': 'España',
-  'US': 'Estados Unidos'
+const getCountryName = (code) => {
+  const currency = CURRENCIES.find(c => c.code === code)
+  return currency ? currency.region : code
 }
-
-const getCountryName = (code) => countryNames[code] || code
 </script>
 
 <template>
