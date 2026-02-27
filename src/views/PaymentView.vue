@@ -12,10 +12,28 @@ const senderData = ref(null)
 const selectedPaymentMethod = ref('')
 const isProcessing = ref(false)
 
+const cardholderName = ref('')
+const cardCvc = ref('')
+const cardExpiryDate = ref('')
+const paypalEmail = ref('')
+
+const showCardInputs = computed(() => selectedPaymentMethod.value === 'debit')
+const showPaypalInputs = computed(() => selectedPaymentMethod.value === 'paypal')
+
+const isFormValid = computed(() => {
+  if (!selectedPaymentMethod.value) return false
+  if (selectedPaymentMethod.value === 'debit') {
+    return cardholderName.value && cardCvc.value && cardExpiryDate.value
+  }
+  if (selectedPaymentMethod.value === 'paypal') {
+    return paypalEmail.value
+  }
+  return false
+})
+
 const paymentMethods = [
-  { id: 'bank', name: 'Transferencia Bancaria', icon: '🏦', description: 'Transferencia directa a cuenta bancaria' },
-  { id: 'debit', name: 'Tarjeta de Débito', icon: '💳', description: 'Pago con tarjeta de débito Visa/Mastercard' },
-  { id: 'paypal', name: 'PayPal', icon: '🅿️', description: 'Pago rápido con tu cuenta PayPal' }
+  { id: 'debit', name: 'Credit/Debit Card', icon: '💳', description: 'Pay with Visa/Mastercard debit or credit card' },
+  { id: 'paypal', name: 'PayPal', icon: '🅿️', description: 'Fast payment with your PayPal account' }
 ]
 
 const exchangeRate = ref(1)
@@ -69,13 +87,29 @@ const formatCurrency = (amount, currency) => {
 }
 
 const handlePayment = async () => {
-  if (!selectedPaymentMethod.value) return
+  if (!selectedPaymentMethod.value || !isFormValid.value) return
   
   isProcessing.value = true
   
+  const paymentData = {
+    method: selectedPaymentMethod.value,
+    ...(selectedPaymentMethod.value === 'debit' && {
+      cardholderName: cardholderName.value,
+      cvc: cardCvc.value,
+      expiryDate: cardExpiryDate.value
+    }),
+    ...(selectedPaymentMethod.value === 'paypal' && {
+      paypalEmail: paypalEmail.value
+    })
+  }
+  
+  const currentTransferData = transferStorage.getTransferData()
+  const updatedData = { ...currentTransferData, paymentMethod: selectedPaymentMethod.value, paymentData: paymentData }
+  transferStorage.saveTransferData(updatedData)
+  
   setTimeout(() => {
     isProcessing.value = false
-    router.push('/transfer')
+    router.push('/tracking')
   }, 1500)
 }
 
@@ -89,24 +123,24 @@ const handleBack = () => {
     <div class="payment-card">
       <div class="payment-header">
         <span class="step-icon">💳</span>
-        <h1>Método de Pago</h1>
-        <p class="subtitle">Selecciona cómo quieres realizar el pago</p>
+        <h1>Payment Method</h1>
+        <p class="subtitle">Select how you want to make the payment</p>
       </div>
 
       <div class="steps-indicator">
         <div class="step completed">
           <span class="step-number">1</span>
-          <span class="step-label">Destinatario</span>
+          <span class="step-label">Recipient</span>
         </div>
         <div class="step-line active"></div>
         <div class="step completed">
           <span class="step-number">2</span>
-          <span class="step-label">Remitente</span>
+          <span class="step-label">Sender</span>
         </div>
         <div class="step-line active"></div>
         <div class="step" :class="{ active: currentStep >= 3 }">
           <span class="step-number">3</span>
-          <span class="step-label">Pago</span>
+          <span class="step-label">Payment</span>
         </div>
       </div>
 
@@ -131,20 +165,68 @@ const handleBack = () => {
           </label>
         </div>
 
+        <div v-if="showCardInputs" class="card-inputs">
+          <h3>Card Details</h3>
+          <div class="form-group">
+            <label>Cardholder Name</label>
+            <input 
+              type="text" 
+              v-model="cardholderName" 
+              placeholder="Name on card"
+              class="form-input"
+            />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>CVC</label>
+              <input 
+                type="text" 
+                v-model="cardCvc" 
+                placeholder="123"
+                maxlength="4"
+                class="form-input"
+              />
+            </div>
+            <div class="form-group">
+              <label>Expiry Date</label>
+              <input 
+                type="text" 
+                v-model="cardExpiryDate" 
+                placeholder="MM/YY"
+                maxlength="5"
+                class="form-input"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div v-if="showPaypalInputs" class="paypal-inputs">
+          <h3>PayPal Details</h3>
+          <div class="form-group">
+            <label>PayPal Email</label>
+            <input 
+              type="email" 
+              v-model="paypalEmail" 
+              placeholder="your@email.com"
+              class="form-input"
+            />
+          </div>
+        </div>
+
         <div class="summary-card">
-          <h3>Resumen de la Transacción</h3>
+          <h3>Transaction Summary</h3>
           
           <div class="summary-section">
             <div class="summary-row">
-              <span class="summary-label">Monto a enviar</span>
+              <span class="summary-label">Amount to send</span>
               <span class="summary-value">{{ transferData?.amount }} {{ transferData?.fromCurrency }}</span>
             </div>
             <div class="summary-row">
-              <span class="summary-label">Tipo de cambio</span>
+              <span class="summary-label">Exchange rate</span>
               <span class="summary-value">1 {{ transferData?.fromCurrency }} = {{ transferData?.convertedAmount / transferData?.amount }} {{ transferData?.toCurrency }}</span>
             </div>
             <div class="summary-row">
-              <span class="summary-label">El destinatario recibe</span>
+              <span class="summary-label">Recipient receives</span>
               <span class="summary-value highlight">{{ transferData?.convertedAmount }} {{ transferData?.toCurrency }}</span>
             </div>
           </div>
@@ -153,11 +235,11 @@ const handleBack = () => {
           
           <div class="summary-section">
             <div class="summary-row">
-              <span class="summary-label">Comisión (2%)</span>
+              <span class="summary-label">Fee (2%)</span>
               <span class="summary-value">{{ commission.toFixed(2) }} {{ transferData?.fromCurrency }}</span>
             </div>
             <div class="summary-row total">
-              <span class="summary-label">Total a pagar</span>
+              <span class="summary-label">Total to pay</span>
               <span class="summary-value">{{ total.toFixed(2) }} {{ transferData?.fromCurrency }}</span>
             </div>
           </div>
@@ -165,15 +247,15 @@ const handleBack = () => {
 
         <div class="form-actions">
           <button type="button" class="back-button" @click="handleBack">
-            Atrás
+            Back
           </button>
           <button 
             type="button" 
             class="submit-button" 
-            :disabled="!selectedPaymentMethod || isProcessing"
+            :disabled="!isFormValid || isProcessing"
             @click="handlePayment"
           >
-            {{ isProcessing ? 'Procesando...' : 'Continuar y Pagar' }}
+            {{ isProcessing ? 'Processing...' : 'Continue and Pay' }}
           </button>
         </div>
       </div>
@@ -448,6 +530,68 @@ const handleBack = () => {
 .submit-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.card-inputs,
+.paypal-inputs {
+  padding: 20px;
+  background: rgba(10, 31, 26, 0.5);
+  border: 1px solid #1a2e29;
+  border-radius: 12px;
+}
+
+.card-inputs h3,
+.paypal-inputs h3 {
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.form-group label {
+  display: block;
+  color: #A0A0A0;
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: #020b08;
+  border: 1px solid #1a2e29;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #00E676;
+  box-shadow: 0 0 0 2px rgba(0, 230, 118, 0.1);
+}
+
+.form-input::placeholder {
+  color: #5a6a65;
 }
 
 @media (max-width: 480px) {
