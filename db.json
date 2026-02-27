@@ -6,26 +6,9 @@
       "password": "password123",
       "fullName": "Test User",
       "idNumber": "12345678"
-    },
-    {
-      "id": "9eea",
-      "email": "naia.arenaza88@gmail.com",
-      "password": "NaiaArenaza",
-      "fullName": "Naia Arenaza ",
-      "idNumber": "79856488"
     }
   ],
   "recipients": [
-    {
-      "id": "7841",
-      "fullName": "Gabriel",
-      "country": "ES",
-      "accountNumber": "dgagfdgfdgdfgdaf",
-      "phone": "+34 659856321",
-      "email": "",
-      "userId": "9eea",
-      "updatedAt": "2026-02-27T09:31:06.840Z",
-      "createdAt": "2026-02-27T09:31:06.840Z"
-    }
+    
   ]
 }

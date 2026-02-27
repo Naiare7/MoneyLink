@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { authService, transferStorage } from '../services/authService'
+import { CURRENCIES } from '../constants/currencies'
 
 const router = useRouter()
 
@@ -67,16 +68,8 @@ const total = computed(() => {
 })
 
 const getCountryName = (code) => {
-  const countries = {
-    'CO': 'Colombia',
-    'MX': 'México',
-    'PE': 'Perú',
-    'CL': 'Chile',
-    'AR': 'Argentina',
-    'ES': 'España',
-    'US': 'Estados Unidos'
-  }
-  return countries[code] || code
+  const currency = CURRENCIES.find(c => c.code === code)
+  return currency ? currency.region : code
 }
 
 const formatCurrency = (amount, currency) => {
