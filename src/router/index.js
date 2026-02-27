@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ConverterView from '../views/ConverterView.vue'
 import AuthView from '../views/AuthView.vue'
 import TransferView from '../views/TransferView.vue'
+import TrackingView from '../views/TrackingView.vue'
 import RecipientView from '../views/RecipientView.vue'
 import SenderView from '../views/SenderView.vue'
 import PaymentView from '../views/PaymentView.vue'
@@ -35,6 +36,11 @@ const router = createRouter({
       path: '/transfer',
       name: 'transfer',
       component: TransferView
+    },
+    {
+      path: '/tracking',
+      name: 'tracking',
+      component: TrackingView
     },
     {
       path: '/recipient',
