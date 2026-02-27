@@ -2,9 +2,11 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import { authService } from './services/authService'
+import { useThemeStore } from './stores/themeStore'
 
 const isAuthenticated = ref(false)
 const currentUser = ref(null)
+const themeStore = useThemeStore()
 
 const checkAuth = () => {
   isAuthenticated.value = authService.isAuthenticated()
@@ -13,13 +15,17 @@ const checkAuth = () => {
   }
 }
 
+const toggleTheme = () => {
+  themeStore.toggleTheme()
+}
+
 onMounted(() => {
   checkAuth()
 })
 </script>
 
 <template>
-  <div class="app-container">
+  <div class="app-container" :data-theme="themeStore.theme">
     <nav class="navbar">
       <div class="navbar-brand">
         <RouterLink to="/" class="logo">
@@ -36,6 +42,10 @@ onMounted(() => {
       </div>
       
       <div class="navbar-auth">
+        <button class="theme-toggle" @click="toggleTheme" :title="`Switch to ${themeStore.isDark ? 'light' : 'dark'} mode`">
+          <span v-if="themeStore.isDark">☀️</span>
+          <span v-else>🌙</span>
+        </button>
         <template v-if="isAuthenticated">
           <span class="user-name">{{ currentUser?.fullName?.split(' ')[0] }}</span>
           <RouterLink to="/dashboard" class="dashboard-link">Mi Cuenta</RouterLink>
@@ -60,17 +70,47 @@ onMounted(() => {
   box-sizing: border-box;
 }
 
+:root {
+  /* Dark mode colors (default) */
+  --bg-primary: #020b08;
+  --bg-secondary: #0a1f1a;
+  --bg-tertiary: #112a24;
+  --text-primary: #FFFFFF;
+  --text-secondary: #A0A0A0;
+  --border-color: #1a2e29;
+  --accent-color: #00E676;
+  --accent-hover: #00C853;
+  --input-bg: #0f2420;
+  --input-border: #1a3a35;
+}
+
+[data-theme="light"] {
+  --bg-primary: #F5F5F5;
+  --bg-secondary: #FFFFFF;
+  --bg-tertiary: #F0F0F0;
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --border-color: #E0E0E0;
+  --accent-color: #00C853;
+  --accent-hover: #00B348;
+  --input-bg: #FFFFFF;
+  --input-border: #D0D0D0;
+}
+
 body {
   font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: #020b08;
-  color: #FFFFFF;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .app-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: var(--bg-primary);
+  transition: background-color 0.3s ease;
 }
 
 .navbar {
@@ -78,8 +118,9 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 16px 32px;
-  background: #0a1f1a;
-  border-bottom: 1px solid #1a2e29;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .navbar-brand {
@@ -101,7 +142,8 @@ body {
 .logo-text {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #FFFFFF;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 }
 
 .navbar-links {
@@ -110,14 +152,14 @@ body {
 }
 
 .nav-link {
-  color: #A0A0A0;
+  color: var(--text-secondary);
   text-decoration: none;
   font-size: 0.9375rem;
   transition: color 0.2s ease;
 }
 
 .nav-link:hover {
-  color: #00E676;
+  color: var(--accent-color);
 }
 
 .navbar-auth {
@@ -126,19 +168,36 @@ body {
   gap: 24px;
 }
 
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  background-color: var(--bg-tertiary);
+}
+
 .auth-link {
-  color: #A0A0A0;
+  color: var(--text-secondary);
   text-decoration: none;
   font-size: 0.9375rem;
   transition: color 0.2s ease;
 }
 
 .auth-link:hover {
-  color: #FFFFFF;
+  color: var(--text-primary);
 }
 
 .auth-button {
-  background: #00E676;
+  background: var(--accent-color);
   color: #000000;
   text-decoration: none;
   padding: 10px 20px;
@@ -146,20 +205,22 @@ body {
   font-size: 0.9375rem;
   font-weight: 600;
   transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
 }
 
 .auth-button:hover {
-  background: #00C853;
+  background: var(--accent-hover);
   transform: translateY(-1px);
 }
 
 .user-name {
-  color: #A0A0A0;
+  color: var(--text-secondary);
   font-size: 0.875rem;
 }
 
 .dashboard-link {
-  color: #00E676;
+  color: var(--accent-color);
   text-decoration: none;
   font-size: 0.875rem;
   font-weight: 500;
@@ -167,7 +228,7 @@ body {
 }
 
 .dashboard-link:hover {
-  color: #00C853;
+  color: var(--accent-hover);
 }
 
 .main-content {
