@@ -131,14 +131,14 @@ const handleRecipientEdit = (recipient) => {
 }
 
 const handleRecipientDelete = async (recipient) => {
-  const confirmed = confirm(`¿Estás seguro de eliminar a ${recipient.fullName} de tus destinatarios frecuentes?`)
+  const confirmed = confirm(`Are you sure you want to delete ${recipient.fullName} from your frequent recipients?`)
   
   if (confirmed) {
     try {
       await recipientService.deleteRecipient(recipient.id)
       frequentRecipients.value = await recipientService.getRecipients()
     } catch (error) {
-      console.error('Error al eliminar destinatario:', error)
+      console.error('Error deleting recipient:', error)
     }
   }
 }
