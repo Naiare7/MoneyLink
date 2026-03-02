@@ -1,6 +1,6 @@
 <script setup>
-import { ref, onMounted, computed, onActivated } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, computed, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { authService, transferStorage } from '../services/authService'
 import { recipientService } from '../services/recipientService'
 import { transactionService } from '../services/transactionService'
@@ -8,7 +8,10 @@ import TransactionCard from '../components/TransactionCard.vue'
 import HistoryList from '../components/HistoryList.vue'
 import RecipientQuickList from '../components/RecipientQuickList.vue'
 
+const emit = defineEmits(['auth-change'])
+
 const router = useRouter()
+const route = useRoute()
 
 const currentUser = ref(null)
 const currentTransaction = ref(null)
@@ -30,7 +33,7 @@ const loadData = async () => {
   }
   
   try {
-    frequentRecipients.value = await recipientService.getRecipients()
+    frequentRecipients.value = await recipientService.getRecipients(true)
   } catch (error) {
     console.error('Error loading recipients:', error)
     frequentRecipients.value = []
@@ -38,13 +41,21 @@ const loadData = async () => {
     isLoadingRecipients.value = false
   }
   
-  recentTransactions.value = transactionService.getRecentTransactions(5)
+  try {
+    recentTransactions.value = await transactionService.getRecentTransactions(5)
+  } catch (error) {
+    console.error('Error loading transactions:', error)
+    recentTransactions.value = []
+  }
 }
 
 onMounted(loadData)
 
-onActivated(() => {
-  loadData()
+// Reload data when the user lands on the dashboard
+watch(() => route.path, (newPath) => {
+  if (newPath === '/dashboard') {
+    loadData()
+  }
 })
 
 const greeting = computed(() => {
@@ -115,6 +126,7 @@ const goToProfile = () => {
 
 const handleLogout = () => {
   authService.logout()
+  emit('auth-change') // Inform App.vue to hide user info
   router.push('/converter')
 }
 </script>
