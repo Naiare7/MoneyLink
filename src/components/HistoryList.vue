@@ -43,8 +43,8 @@ const getCountryName = (code) => {
   <div class="history-list">
     <div v-if="transactions.length === 0" class="empty-state">
       <span class="empty-icon">📭</span>
-      <p class="empty-text">No tienes transacciones aún</p>
-      <p class="empty-subtext">Tu historial aparecerá aquí</p>
+      <p class="empty-text">You don't have any transactions yet</p>
+      <p class="empty-subtext">Your history will appear here</p>
     </div>
     
     <div v-else class="transactions">
@@ -68,7 +68,7 @@ const getCountryName = (code) => {
         
         <div class="tx-right">
           <span class="tx-date">{{ formatDate(tx.createdAt) }}</span>
-          <span class="tx-status completed">Completada</span>
+          <span class="tx-status completed">Completed</span>
         </div>
       </div>
     </div>
