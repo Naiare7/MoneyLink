@@ -211,8 +211,8 @@ La aplicación estará disponible en `http://localhost:5173`
 
 ### APIs Externas
 
-- **Frankfurter API**: Obtención de tasas de cambio en tiempo real
-- Base URL: `https://api.frankfurter.app/`
+- **Exchange Rate API**: Obtención de tasas de cambio en tiempo real
+- Base URL: `https://api.exchangerateapi.net`
 
 ## Testing
 
