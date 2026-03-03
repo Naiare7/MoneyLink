@@ -279,9 +279,9 @@ Este proyecto ha sido desarrollado por estudiantes del Bootcamp Peñascal F5 con
 ## Colaboradores del Proyecto
 Este proyecto ha sido desarrollado de forma colaborativa mediante ramas en GitHub por:
 
-    Gabriel Hernández — GitHub: __________________________
+    Gabriel Hernández — GitHub: https://github.com/yggabo/MoneyLink.git__________________________
 
-    Naia Arenaza — GitHub: __________________________
+    Naia Arenaza — GitHub: https://github.com/Naiare7/MoneyLink.git__________________________
 
     Marlen Álvarez — GitHub: https://github.com/alvarezmarlen/MoneyLink.git
 
